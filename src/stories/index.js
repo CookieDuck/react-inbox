@@ -5,9 +5,16 @@ import { action } from '@storybook/addon-actions';
 import { linkTo } from '@storybook/addon-links';
 
 import { Button, Welcome } from '@storybook/react/demo';
+import Message from '../components/Message'
 
 storiesOf('Welcome', module).add('to Storybook', () => <Welcome showApp={linkTo('Button')} />);
 
 storiesOf('Button', module)
   .add('with text', () => <Button onClick={action('clicked')}>Hello Button</Button>)
   .add('with some emoji', () => <Button onClick={action('clicked')}>😀 😎 👍 💯</Button>);
+
+const readMsg = { subject: "Some cool, marked as read message", read: true };
+const unreadMsg = { subject: "Some cool, not-yet-read message", read: false };
+storiesOf('Message', module)
+  .add('Read message has read stye', () => <Message message={readMsg}/>)
+  .add('Unread message has unread stye', () => <Message message={unreadMsg}/>)
