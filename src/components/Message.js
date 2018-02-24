@@ -4,25 +4,27 @@ import 'bootstrap/dist/css/bootstrap-theme.css';
 import 'font-awesome/css/font-awesome.css';
 import './../index.css';
 
-const Message = ({ message: { subject, read, selected } }) => {
-    const msgStyle = read ? "read" : "unread";
+const Message = ({ message: { subject, read, selected, starred } }) => {
+    const readMsgStyle = read ? "read" : "unread";
+    const selMsgStyle = selected ? " selected" : "";
     const sel = selected ? "checked" : "";
+    const starStyle = starred ? "" : "-o";
 
     return (
-        <div className={"row message " + msgStyle}>
-            <div class="col-xs-1">
-                <div class="row">
-                    <div class="col-xs-2">
+        <div className={"row message " + readMsgStyle + selMsgStyle}>
+            <div className="col-xs-1">
+                <div className="row">
+                    <div className="col-xs-2">
                         <input type="checkbox" checked={sel}/>
                     </div>
-                    <div class="col-xs-2">
-                        <i class="star fa fa-star-o"></i>
+                    <div className="col-xs-2">
+                        <i className={"star fa fa-star" + starStyle}></i>
                     </div>
                 </div>
             </div>
-            <div class="col-xs-11">
+            <div className="col-xs-11">
                 <a href="#">
-                    {`${subject} is read: ${read}`}
+                    {subject}
                 </a>
             </div>
         </div>
