@@ -15,6 +15,11 @@ storiesOf('Button', module)
 
 const readMsg = { subject: "Some cool, marked as read message", read: true };
 const unreadMsg = { subject: "Some cool, not-yet-read message", read: false };
+const selectedMsg = { subject: "Has a check", selected: true };
+const unselectedMsg = { subject: "No check mark", selected: false };
+
 storiesOf('Message', module)
-  .add('Read message has read stye', () => <Message message={readMsg}/>)
-  .add('Unread message has unread stye', () => <Message message={unreadMsg}/>)
+  .add('Read message has read style', () => <Message message={readMsg}/>)
+  .add('Unread message has unread style', () => <Message message={unreadMsg}/>)
+  .add('Selected message has check', () => <Message message={selectedMsg}/>)
+  .add('Unselected message has no check', () => <Message message={unselectedMsg}/>)
