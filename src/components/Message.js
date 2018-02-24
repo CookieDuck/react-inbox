@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap-theme.css';
 import 'font-awesome/css/font-awesome.css';
 import './../index.css';
 
-const Message = ({ message: { subject, read, selected, starred } }) => {
+const Message = ({ message: { subject, read, selected, starred, labels } }) => {
     const readMsgStyle = read ? "read" : "unread";
     const selMsgStyle = selected ? " selected" : "";
     const sel = selected ? "checked" : "";
@@ -23,6 +23,7 @@ const Message = ({ message: { subject, read, selected, starred } }) => {
                 </div>
             </div>
             <div className="col-xs-11">
+                {!!labels ? labels.map((label) => <span className="label label-warning">{label}</span> ) : "" }
                 <a href="#">
                     {subject}
                 </a>

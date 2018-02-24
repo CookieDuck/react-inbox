@@ -20,6 +20,7 @@ const unselectedMsg = { subject: "No check mark", selected: false };
 const starredMsg = { subject: "Beautiful Star", starred: true };
 const unstarredMsg = { subject: "Starless", starred: false };
 const readAndSelMsg = { subject: "Yellow BG, Plain Font", read: true, selected: true };
+const msgWithLabels = { subject: "I have labels", labels: ["label 1", "label 2"] };
 
 storiesOf('Message', module)
   .add('Read message has read style', () => <Message message={readMsg}/>)
@@ -29,3 +30,4 @@ storiesOf('Message', module)
   .add('Unselected message has no check', () => <Message message={unselectedMsg}/>)
   .add('Starry message has star', () => <Message message={starredMsg}/>)
   .add('Unstarred: no star', () => <Message message={unstarredMsg}/>)
+  .add('Labels show up', () => <Message message={msgWithLabels} />)
