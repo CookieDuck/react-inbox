@@ -4,14 +4,9 @@ import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import { linkTo } from '@storybook/addon-links';
 
-import { Button, Welcome } from '@storybook/react/demo';
-import Message from '../components/Message'
-
-storiesOf('Welcome', module).add('to Storybook', () => <Welcome showApp={linkTo('Button')} />);
-
-storiesOf('Button', module)
-  .add('with text', () => <Button onClick={action('clicked')}>Hello Button</Button>)
-  .add('with some emoji', () => <Button onClick={action('clicked')}>😀 😎 👍 💯</Button>);
+import Message from '../components/Message';
+import Messages from '../components/Messages';
+import seedData from '../data/messages.json';
 
 const readMsg = { subject: "Some cool, marked as read message", read: true };
 const unreadMsg = { subject: "Some cool, not-yet-read message", read: false };
@@ -31,3 +26,7 @@ storiesOf('Message', module)
   .add('Starry message has star', () => <Message message={starredMsg}/>)
   .add('Unstarred: no star', () => <Message message={unstarredMsg}/>)
   .add('Labels show up', () => <Message message={msgWithLabels} />)
+
+storiesOf('Messages', module)
+  .add('Renders Message components', () => <Messages messages={seedData}/>)
+  
