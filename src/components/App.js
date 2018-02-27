@@ -1,5 +1,6 @@
 import React from 'react';
 import Messages from './Messages';
+import Toolbar from './Toolbar';
 
 class App extends React.Component {
     constructor(props) {
@@ -52,6 +53,7 @@ class App extends React.Component {
     render() {
         return(
             <div>
+                <Toolbar messages={this.state.messages} />
                 <Messages messages={this.state.messages} actionHandler={this.handleAction} />
             </div>
         );

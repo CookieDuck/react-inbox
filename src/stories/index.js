@@ -6,6 +6,7 @@ import { linkTo } from '@storybook/addon-links';
 
 import Message from '../components/Message';
 import Messages from '../components/Messages';
+import Toolbar from '../components/Toolbar';
 import App from '../components/App';
 import seedData from '../data/messages.json';
 
@@ -31,6 +32,9 @@ storiesOf('Message', module)
 
 storiesOf('Messages', module)
   .add('Renders Message components', () => <Messages messages={seedData} actionHandler={action('Click')} />)
+
+storiesOf('Toolbar', module)
+  .add('Renders unread message count', () => <Toolbar messages={[readMsg, unreadMsg]} />)
   
 storiesOf('App', module)
   .add('Clicking checkbox toggles selected state', () => <App messages={[unreadMsg, readMsg, readAndSelMsg, unstarredMsg, starredMsg]} />)
