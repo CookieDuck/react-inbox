@@ -8,18 +8,19 @@ class App extends React.Component {
     }
 
     handleAction = (action) => {
+        var message, updatedMessages;
         console.log("Received action", action);
+
         switch (action.action) {
             case "toggleSelected":
-                const index = this.indexOf(action.id);
-                const toggledMessage = this.cloneMessage(this.state.messages[index]);
-                toggledMessage.selected = !toggledMessage.selected;
+                ({message: message, messages: updatedMessages} = this.getItemAndUpdatedMessages(action.id));
+                message.selected = !message.selected;
+                this.setState({ messages: updatedMessages })
+                break;
 
-                const updatedMessages = [
-                    ...this.state.messages.slice(0, index),
-                    toggledMessage,
-                    ...this.state.messages.slice(index + 1)
-                ];
+            case "toggleStarred":
+                ({message: message, messages: updatedMessages} = this.getItemAndUpdatedMessages(action.id));
+                message.starred = !message.starred;
                 this.setState({ messages: updatedMessages })
                 break;
         }
@@ -35,6 +36,17 @@ class App extends React.Component {
             newMsg.labels = [...m.labels];
         }
         return newMsg;
+    }
+
+    getItemAndUpdatedMessages = (id) => {
+        const indexOfMessage = this.indexOf(id);
+        const message = this.cloneMessage(this.state.messages[indexOfMessage]);
+        const msgs = [
+            ...this.state.messages.slice(0, indexOfMessage),
+            message,
+            ...this.state.messages.slice(indexOfMessage + 1)
+        ];
+        return({ message: message, messages: msgs });
     }
 
     render() {

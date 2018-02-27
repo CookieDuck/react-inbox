@@ -15,6 +15,11 @@ const Message = ({ message: { id, subject, read, selected, starred, labels }, ac
         actionHandler({ action: "toggleSelected", id: id });
     }
 
+    const toggleStarred = (e) => {
+        e.preventDefault();
+        actionHandler({ action: "toggleStarred", id: id});
+    }
+
     return (
         <div className={"row message " + readMsgStyle + selMsgStyle}>
             <div className="col-xs-1">
@@ -23,7 +28,7 @@ const Message = ({ message: { id, subject, read, selected, starred, labels }, ac
                         <input type="checkbox" checked={selected} onClick={toggleSelected} />
                     </div>
                     <div className="col-xs-2">
-                        <i className={"star fa fa-star" + starStyle}></i>
+                        <i className={"star fa fa-star" + starStyle} onClick={toggleStarred}></i>
                     </div>
                 </div>
             </div>

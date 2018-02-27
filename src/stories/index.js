@@ -34,3 +34,4 @@ storiesOf('Messages', module)
   
 storiesOf('App', module)
   .add('Clicking checkbox toggles selected state', () => <App messages={[unreadMsg, readMsg, readAndSelMsg, unstarredMsg, starredMsg]} />)
+  .add('Clicking star toggles starred state', () => <App messages={[unstarredMsg, starredMsg]} />)
