@@ -35,6 +35,9 @@ storiesOf('Messages', module)
 
 storiesOf('Toolbar', module)
   .add('Renders unread message count', () => <Toolbar messages={[readMsg, unreadMsg]} />)
+  .add('No messages selected: unchecked box, disabled buttons', () => <Toolbar messages={[unselectedMsg]}/>)
+  .add('Some (but not all) selected: minus box, enabled buttons', () => <Toolbar messages={[unselectedMsg, selectedMsg]} />)
+  .add('All messages selected: checked box, enabled buttons', () => <Toolbar messages={[selectedMsg]}/>)
   
 storiesOf('App', module)
   .add('Clicking checkbox toggles selected state', () => <App messages={[unreadMsg, readMsg, readAndSelMsg, unstarredMsg, starredMsg]} />)
