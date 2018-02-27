@@ -1,6 +1,10 @@
 import React from 'react';
 
-const Toolbar = ({messages}) => {
+const Toolbar = ({messages, actionHandler}) => {
+    const handleSelectAllClick = (e) => {
+        actionHandler({ action: "selectAll" });
+    }
+
     const unreadCount = messages.filter((m) => !m.read).length;
     var unreadDisplay = "unread message";
     if (unreadCount != 1)
@@ -18,13 +22,12 @@ const Toolbar = ({messages}) => {
 
     const disabled = (selectedCount > 0 && messages.length > 0) ? "" : "disabled";
 
-
     return (
         <div className="row toolbar">
             <div className="col-md-12">
 
-                <button className="btn btn-default">
-                    <i className={"fa " + selectMessagesStyle} ></i>
+                <button className="btn btn-default" onClick={handleSelectAllClick}>
+                    <i className={"fa " + selectMessagesStyle}></i>
                 </button>
 
                 <button className="btn btn-default" disabled={disabled}>

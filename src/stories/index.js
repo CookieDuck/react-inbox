@@ -42,3 +42,8 @@ storiesOf('Toolbar', module)
 storiesOf('App', module)
   .add('Clicking checkbox toggles selected state', () => <App messages={[unreadMsg, readMsg, readAndSelMsg, unstarredMsg, starredMsg]} />)
   .add('Clicking star toggles starred state', () => <App messages={[unstarredMsg, starredMsg]} />)
+
+storiesOf('Bulk Select', module)
+  .add('No selected messages: Select All selects all', () => <App messages={[unselectedMsg, unreadMsg]} />)
+  .add('Some selected messages: Select All selects all', () => <App messages={[unselectedMsg, selectedMsg]} />)
+  .add('All selected messages: Select All UNselects all', () => <App messages={[readAndSelMsg, selectedMsg]} />)

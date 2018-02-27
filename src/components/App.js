@@ -14,15 +14,26 @@ class App extends React.Component {
 
         switch (action.action) {
             case "toggleSelected":
-                ({message: message, messages: updatedMessages} = this.getItemAndUpdatedMessages(action.id));
+                ({ message: message, messages: updatedMessages } = this.getItemAndUpdatedMessages(action.id));
                 message.selected = !message.selected;
                 this.setState({ messages: updatedMessages })
                 break;
 
             case "toggleStarred":
-                ({message: message, messages: updatedMessages} = this.getItemAndUpdatedMessages(action.id));
+                ({ message: message, messages: updatedMessages } = this.getItemAndUpdatedMessages(action.id));
                 message.starred = !message.starred;
                 this.setState({ messages: updatedMessages })
+                break;
+
+            case "selectAll":
+                const allSelected = this.state.messages.every((m) => m.selected);
+                updatedMessages = this.state.messages.map((m) => {
+                    const copy = this.cloneMessage(m);
+                    copy.selected = !allSelected;
+                    return copy;
+                });
+                this.setState({ messages: updatedMessages });
+
                 break;
         }
     }
@@ -47,13 +58,13 @@ class App extends React.Component {
             message,
             ...this.state.messages.slice(indexOfMessage + 1)
         ];
-        return({ message: message, messages: msgs });
+        return ({ message: message, messages: msgs });
     }
 
     render() {
-        return(
+        return (
             <div>
-                <Toolbar messages={this.state.messages} />
+                <Toolbar messages={this.state.messages} actionHandler={this.handleAction} />
                 <Messages messages={this.state.messages} actionHandler={this.handleAction} />
             </div>
         );
