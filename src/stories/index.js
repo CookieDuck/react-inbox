@@ -47,3 +47,6 @@ storiesOf('Bulk Select', module)
   .add('No selected messages: Select All selects all', () => <App messages={[unselectedMsg, unreadMsg]} />)
   .add('Some selected messages: Select All selects all', () => <App messages={[unselectedMsg, selectedMsg]} />)
   .add('All selected messages: Select All UNselects all', () => <App messages={[readAndSelMsg, selectedMsg]} />)
+
+storiesOf('Mark as Read or Unread', module)
+  .add('Selected messages become Read (Plain) or Unread (Bold)', () => <App messages={[unreadMsg, readAndSelMsg]}/>)

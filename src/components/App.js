@@ -8,34 +8,44 @@ class App extends React.Component {
         this.state = { messages: props.messages };
     }
 
-    handleAction = (action) => {
+    handleAction = ({action, id}) => {
         var message, updatedMessages;
         console.log("Received action", action);
 
-        switch (action.action) {
+        switch (action) {
             case "toggleSelected":
-                ({ message: message, messages: updatedMessages } = this.getItemAndUpdatedMessages(action.id));
+                ({ message: message, messages: updatedMessages } = this.getItemAndUpdatedMessages(id));
                 message.selected = !message.selected;
-                this.setState({ messages: updatedMessages })
                 break;
 
             case "toggleStarred":
-                ({ message: message, messages: updatedMessages } = this.getItemAndUpdatedMessages(action.id));
+                ({ message: message, messages: updatedMessages } = this.getItemAndUpdatedMessages(id));
                 message.starred = !message.starred;
-                this.setState({ messages: updatedMessages })
                 break;
 
             case "selectAll":
-                const allSelected = this.state.messages.every((m) => m.selected);
+                const isAllSelected = this.state.messages.every((m) => m.selected);
                 updatedMessages = this.state.messages.map((m) => {
                     const copy = this.cloneMessage(m);
-                    copy.selected = !allSelected;
+                    copy.selected = !isAllSelected;
                     return copy;
                 });
-                this.setState({ messages: updatedMessages });
+                break;
 
+            case "markAsRead": // fall-through on purpose
+            case "markAsUnread":
+                const newReadStatus = action === "markAsRead";
+                updatedMessages = this.state.messages.map((m) => {
+                    const copy = this.cloneMessage(m);
+                    if (copy.selected) {
+                        copy.read = newReadStatus;
+                    }
+                    return copy;
+                });
                 break;
         }
+
+        this.setState({ messages: updatedMessages });
     }
 
     indexOf = (id) => {

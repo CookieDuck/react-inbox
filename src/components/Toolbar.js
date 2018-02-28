@@ -5,6 +5,14 @@ const Toolbar = ({messages, actionHandler}) => {
         actionHandler({ action: "selectAll" });
     }
 
+    const markAsRead = (e) => {
+        actionHandler({ action: "markAsRead" })
+    }
+
+    const markAsUnread = (e) => {
+        actionHandler({ action: "markAsUnread" })
+    }
+
     const unreadCount = messages.filter((m) => !m.read).length;
     var unreadDisplay = "unread message";
     if (unreadCount != 1)
@@ -30,11 +38,11 @@ const Toolbar = ({messages, actionHandler}) => {
                     <i className={"fa " + selectMessagesStyle}></i>
                 </button>
 
-                <button className="btn btn-default" disabled={disabled}>
+                <button className="btn btn-default" disabled={disabled} onClick={markAsRead} >
                     Mark As Read
                 </button>
 
-                <button className="btn btn-default" disabled={disabled}>
+                <button className="btn btn-default" disabled={disabled} onClick={markAsUnread} >
                     Mark As Unread
                 </button>
 
