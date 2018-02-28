@@ -26,6 +26,14 @@ const Toolbar = ({messages, actionHandler}) => {
         e.target.selectedIndex = 0;
     }
 
+    const removeLabel = (e) => {
+        const value = e.target.value;
+        if (value) {
+            actionHandler({ action: "removeLabel", label: value });
+        }
+        e.target.selectedIndex = 0;
+    }
+
     const unreadCount = messages.filter((m) => !m.read).length;
     var unreadDisplay = "unread message";
     if (unreadCount != 1)
@@ -66,14 +74,14 @@ const Toolbar = ({messages, actionHandler}) => {
                     <option value="gschool">gschool</option>
                 </select>
 
-                <select className="form-control label-select" disabled={disabled}>
+                <select className="form-control label-select" disabled={disabled} onChange={removeLabel}>
                     <option>Remove label</option>
                     <option value="dev">dev</option>
                     <option value="personal">personal</option>
                     <option value="gschool">gschool</option>
                 </select>
 
-                <button className="btn btn-default" disabled={disabled} onClick={handleDelete}>
+                <button className="btn btn-default" disabled={disabled} onClick={handleDelete} >
                     <i className="fa fa-trash-o"></i>
                 </button>
 

@@ -66,6 +66,19 @@ class App extends React.Component {
                     return copy;
                 });
                 break;
+
+            case "removeLabel":
+                updatedMessages = this.state.messages.map((m) => {
+                    const copy = this.cloneMessage(m);
+                    if (copy.selected && copy.labels) {
+                        const indexOfLabel = copy.labels.findIndex(l => l === label);
+                        if (indexOfLabel > -1) {
+                            copy.labels.splice(indexOfLabel, 1);
+                        }
+                    }
+                    return copy;
+                });
+                break;
         }
 
         this.setState({ messages: updatedMessages });

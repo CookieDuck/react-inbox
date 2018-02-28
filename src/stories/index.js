@@ -57,3 +57,7 @@ storiesOf('Deleting Messages', module)
 storiesOf('Adding Labels', module)
   .add('Adding label from dropdown applies to all selected messages (but doesn\'t duplicate existing label on message', 
     () => <App messages={[selectedMsg, msgWithLabels]} />)
+
+storiesOf('Removing Labels', module)
+  .add('Removing label from dropdown removes from all selected (no errors if label absent on message)',
+    () => <App messages={seedData} />)
