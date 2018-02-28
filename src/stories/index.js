@@ -49,4 +49,7 @@ storiesOf('Bulk Select', module)
   .add('All selected messages: Select All UNselects all', () => <App messages={[readAndSelMsg, selectedMsg]} />)
 
 storiesOf('Mark as Read or Unread', module)
-  .add('Selected messages become Read (Plain) or Unread (Bold)', () => <App messages={[unreadMsg, readAndSelMsg]}/>)
+  .add('Selected messages become Read (Plain) or Unread (Bold)', () => <App messages={[unreadMsg, readAndSelMsg]} />)
+
+storiesOf('Deleting Messages', module)
+  .add('Delete should remove all selected messages', () => <App messages={[unselectedMsg, selectedMsg]} />)

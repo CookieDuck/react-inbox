@@ -43,6 +43,15 @@ class App extends React.Component {
                     return copy;
                 });
                 break;
+
+            case "deleteSelected":
+                updatedMessages = this.state.messages.reduce((accumulator, m) => {
+                    if (!m.selected) {
+                        accumulator.push(this.cloneMessage(m));
+                    }
+                    return accumulator;
+                }, []);
+                break;
         }
 
         this.setState({ messages: updatedMessages });

@@ -6,11 +6,16 @@ const Toolbar = ({messages, actionHandler}) => {
     }
 
     const markAsRead = (e) => {
-        actionHandler({ action: "markAsRead" })
+        actionHandler({ action: "markAsRead" });
     }
 
     const markAsUnread = (e) => {
-        actionHandler({ action: "markAsUnread" })
+        actionHandler({ action: "markAsUnread" });
+    }
+
+    const handleDelete = (e) => {
+        e.preventDefault();
+        actionHandler({ action: "deleteSelected" });
     }
 
     const unreadCount = messages.filter((m) => !m.read).length;
@@ -60,7 +65,7 @@ const Toolbar = ({messages, actionHandler}) => {
                     <option value="gschool">gschool</option>
                 </select>
 
-                <button className="btn btn-default" disabled={disabled}>
+                <button className="btn btn-default" disabled={disabled} onClick={handleDelete}>
                     <i className="fa fa-trash-o"></i>
                 </button>
 
