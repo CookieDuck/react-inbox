@@ -18,6 +18,14 @@ const Toolbar = ({messages, actionHandler}) => {
         actionHandler({ action: "deleteSelected" });
     }
 
+    const applyLabel = (e) => {
+        const value = e.target.value;
+        if (value) {
+            actionHandler({ action: "applyLabel", label: value });
+        }
+        e.target.selectedIndex = 0;
+    }
+
     const unreadCount = messages.filter((m) => !m.read).length;
     var unreadDisplay = "unread message";
     if (unreadCount != 1)
@@ -51,7 +59,7 @@ const Toolbar = ({messages, actionHandler}) => {
                     Mark As Unread
                 </button>
 
-                <select className="form-control label-select" disabled={disabled}>
+                <select className="form-control label-select" disabled={disabled} onChange={applyLabel} >
                     <option>Apply label</option>
                     <option value="dev">dev</option>
                     <option value="personal">personal</option>

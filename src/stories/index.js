@@ -53,3 +53,7 @@ storiesOf('Mark as Read or Unread', module)
 
 storiesOf('Deleting Messages', module)
   .add('Delete should remove all selected messages', () => <App messages={[unselectedMsg, selectedMsg]} />)
+
+storiesOf('Adding Labels', module)
+  .add('Adding label from dropdown applies to all selected messages (but doesn\'t duplicate existing label on message', 
+    () => <App messages={[selectedMsg, msgWithLabels]} />)

@@ -8,7 +8,7 @@ class App extends React.Component {
         this.state = { messages: props.messages };
     }
 
-    handleAction = ({action, id}) => {
+    handleAction = ({action, id, label}) => {
         var message, updatedMessages;
         console.log("Received action", action);
 
@@ -51,6 +51,20 @@ class App extends React.Component {
                     }
                     return accumulator;
                 }, []);
+                break;
+
+            case "applyLabel":
+                updatedMessages = this.state.messages.map((m) => {
+                    const copy = this.cloneMessage(m);
+                    if (copy.selected) {
+                        if (!copy.labels) {
+                            copy.labels = [label];
+                        } else if (!copy.labels.includes(label)) {
+                            copy.labels.push(label);
+                        }
+                    }
+                    return copy;
+                });
                 break;
         }
 
