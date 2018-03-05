@@ -3,12 +3,10 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
 import 'font-awesome/css/font-awesome.css';
 import './../index.css';
-import { action } from '@storybook/addon-actions/dist/preview';
 
 const Message = ({ message: { id, subject, read, selected, starred, labels }, actionHandler }) => {
     const readMsgStyle = read ? "read" : "unread";
     const selMsgStyle = selected ? " selected" : "";
-    const sel = selected ? "checked" : "";
     const starStyle = starred ? "" : "-o";
 
     const toggleSelected = (e) => {

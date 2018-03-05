@@ -36,12 +36,12 @@ const Toolbar = ({messages, actionHandler}) => {
 
     const unreadCount = messages.filter((m) => !m.read).length;
     var unreadDisplay = "unread message";
-    if (unreadCount != 1)
+    if (unreadCount !== 1)
         unreadDisplay += "s";
     
     const selectedCount = messages.filter((m) => m.selected).length;
     var selectMessagesStyle = "fa-square-o"; // 0
-    if (selectedCount != 0 && messages.length > 0) {
+    if (selectedCount !== 0 && messages.length > 0) {
         if (messages.length === selectedCount) {
             selectMessagesStyle = "fa-check-square-o"
         } else {

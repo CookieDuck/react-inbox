@@ -92,6 +92,9 @@ class Viewport extends React.Component {
                     return copy;
                 });
                 break;
+
+            default:
+                console.debug("Received unknown action:", action);
         }
 
         this.setState({ messages: updatedMessages });
