@@ -7,7 +7,7 @@ import { linkTo } from '@storybook/addon-links';
 import Message from '../components/Message';
 import Messages from '../components/Messages';
 import Toolbar from '../components/Toolbar';
-import App from '../components/App';
+import Viewport from '../components/Viewport';
 import seedData from '../data/messages.json';
 
 var idGen = 1;
@@ -39,25 +39,25 @@ storiesOf('Toolbar', module)
   .add('Some (but not all) selected: minus box, enabled buttons', () => <Toolbar messages={[unselectedMsg, selectedMsg]} />)
   .add('All messages selected: checked box, enabled buttons', () => <Toolbar messages={[selectedMsg]}/>)
   
-storiesOf('App', module)
-  .add('Clicking checkbox toggles selected state', () => <App messages={[unreadMsg, readMsg, readAndSelMsg, unstarredMsg, starredMsg]} />)
-  .add('Clicking star toggles starred state', () => <App messages={[unstarredMsg, starredMsg]} />)
+storiesOf('Viewport', module)
+  .add('Clicking checkbox toggles selected state', () => <Viewport messages={[unreadMsg, readMsg, readAndSelMsg, unstarredMsg, starredMsg]} />)
+  .add('Clicking star toggles starred state', () => <Viewport messages={[unstarredMsg, starredMsg]} />)
 
 storiesOf('Bulk Select', module)
-  .add('No selected messages: Select All selects all', () => <App messages={[unselectedMsg, unreadMsg]} />)
-  .add('Some selected messages: Select All selects all', () => <App messages={[unselectedMsg, selectedMsg]} />)
-  .add('All selected messages: Select All UNselects all', () => <App messages={[readAndSelMsg, selectedMsg]} />)
+  .add('No selected messages: Select All selects all', () => <Viewport messages={[unselectedMsg, unreadMsg]} />)
+  .add('Some selected messages: Select All selects all', () => <Viewport messages={[unselectedMsg, selectedMsg]} />)
+  .add('All selected messages: Select All UNselects all', () => <Viewport messages={[readAndSelMsg, selectedMsg]} />)
 
 storiesOf('Mark as Read or Unread', module)
-  .add('Selected messages become Read (Plain) or Unread (Bold)', () => <App messages={[unreadMsg, readAndSelMsg]} />)
+  .add('Selected messages become Read (Plain) or Unread (Bold)', () => <Viewport messages={[unreadMsg, readAndSelMsg]} />)
 
 storiesOf('Deleting Messages', module)
-  .add('Delete should remove all selected messages', () => <App messages={[unselectedMsg, selectedMsg]} />)
+  .add('Delete should remove all selected messages', () => <Viewport messages={[unselectedMsg, selectedMsg]} />)
 
 storiesOf('Adding Labels', module)
-  .add('Adding label from dropdown applies to all selected messages (but doesn\'t duplicate existing label on message', 
-    () => <App messages={[selectedMsg, msgWithLabels]} />)
+  .add('Adding label from dropdown Viewportlies to all selected messages (but doesn\'t duplicate existing label on message', 
+    () => <Viewport messages={[selectedMsg, msgWithLabels]} />)
 
 storiesOf('Removing Labels', module)
   .add('Removing label from dropdown removes from all selected (no errors if label absent on message)',
-    () => <App messages={seedData} />)
+    () => <Viewport messages={seedData} />)

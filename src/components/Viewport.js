@@ -2,10 +2,23 @@ import React from 'react';
 import Messages from './Messages';
 import Toolbar from './Toolbar';
 
-class App extends React.Component {
+class Viewport extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { messages: props.messages };
+        this.state =  { messages: [] }
+    }
+
+    async getResource(resource) {
+        const response = await fetch(`/api/${resource}`);
+        console.log("Raw response for", resource, ":", response);
+        const json = await response.json();
+        console.log("JSON of", resource, ":", json);
+        return json._embedded[resource];
+      }
+
+    async componentDidMount() {
+        const messages = await this.getResource("messages");
+        this.setState({ messages: messages });
     }
 
     handleAction = ({action, id, label}) => {
@@ -117,4 +130,4 @@ class App extends React.Component {
     }
 }
 
-export default App;
+export default Viewport;
