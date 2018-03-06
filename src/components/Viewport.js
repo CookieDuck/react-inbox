@@ -61,13 +61,22 @@ class Viewport extends React.Component {
             case "markAsRead": // fall-through on purpose
             case "markAsUnread":
                 const newReadStatus = action === "markAsRead";
+                const markingMessageIds = [];
                 updatedMessages = this.state.messages.map((m) => {
                     const copy = this.cloneMessage(m);
                     if (copy.selected) {
                         copy.read = newReadStatus;
+                        markingMessageIds.push(copy.id);
                     }
                     return copy;
                 });
+
+                this.patch({
+                    'messageIds': markingMessageIds,
+                    'command': 'read',
+                    'read': newReadStatus
+                });
+
                 break;
 
             case "deleteSelected":
