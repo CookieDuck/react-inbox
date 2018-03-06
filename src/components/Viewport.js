@@ -109,11 +109,13 @@ class Viewport extends React.Component {
                     return copy;
                 });
 
-                this.patch({
-                    'messageIds': patchMessageIds,
-                    'command': 'addLabel',
-                    'label': label
-                });
+                if (patchMessageIds.length > 0) {
+                    this.patch({
+                        'messageIds': patchMessageIds,
+                        'command': 'addLabel',
+                        'label': label
+                    });
+                }
                 break;
 
             case "removeLabel":
@@ -129,11 +131,13 @@ class Viewport extends React.Component {
                     return copy;
                 });
 
-                this.patch({
-                    'messageIds': patchMessageIds,
-                    'command': 'removeLabel',
-                    'label': label
-                });
+                if (patchMessageIds.length > 0) {
+                    this.patch({
+                        'messageIds': patchMessageIds,
+                        'command': 'removeLabel',
+                        'label': label
+                    });
+                }
                 break;
 
             default:
