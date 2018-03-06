@@ -8,13 +8,24 @@ class Viewport extends React.Component {
         this.state =  { messages: [] }
     }
 
+    patch(requestEnvelope) {
+        console.log("Doing patch for", requestEnvelope);
+        fetch('/api/messages', {
+            method: "PATCH",
+            body: JSON.stringify(requestEnvelope),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+    }
+
     async getResource(resource) {
         const response = await fetch(`/api/${resource}`);
         console.log("Raw response for", resource, ":", response);
         const json = await response.json();
         console.log("JSON of", resource, ":", json);
         return json._embedded[resource];
-      }
+    }
 
     async componentDidMount() {
         const messages = await this.getResource("messages");
@@ -27,13 +38,15 @@ class Viewport extends React.Component {
 
         switch (action) {
             case "toggleSelected":
-                ({ message: message, messages: updatedMessages } = this.getItemAndUpdatedMessages(id));
+                ({ message, messages: updatedMessages } = this.getItemAndUpdatedMessages(id));
                 message.selected = !message.selected;
                 break;
 
             case "toggleStarred":
-                ({ message: message, messages: updatedMessages } = this.getItemAndUpdatedMessages(id));
-                message.starred = !message.starred;
+                ({ message, messages: updatedMessages } = this.getItemAndUpdatedMessages(id));
+                const nextStarredState = !message.starred;
+                message.starred = nextStarredState;
+                this.patch({'messageIds': [id], 'command': 'star', 'star': nextStarredState});
                 break;
 
             case "selectAll":
