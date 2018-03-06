@@ -58,8 +58,8 @@ const Toolbar = ({messages, actionHandler}) => {
     return (
         <div className="row toolbar">
             <div className="col-md-12">
-                <a class="btn btn-danger" onClick={handleComposeButton}>
-                    <i class="fa fa-plus"></i>
+                <a className="btn btn-danger" onClick={handleComposeButton}>
+                    <i className="fa fa-plus"></i>
                 </a>
 
                 <button className="btn btn-default" onClick={handleSelectAllClick}>
