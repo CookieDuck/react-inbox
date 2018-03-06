@@ -80,12 +80,20 @@ class Viewport extends React.Component {
                 break;
 
             case "deleteSelected":
+                const messageIdsToDelete = [];
                 updatedMessages = this.state.messages.reduce((accumulator, m) => {
                     if (!m.selected) {
                         accumulator.push(this.cloneMessage(m));
+                    } else {
+                        messageIdsToDelete.push(m.id);
                     }
                     return accumulator;
                 }, []);
+
+                this.patch({
+                    'messageIds': messageIdsToDelete,
+                    'command': 'delete'
+                });
                 break;
 
             case "applyLabel":
