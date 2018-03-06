@@ -97,6 +97,7 @@ class Viewport extends React.Component {
                 break;
 
             case "applyLabel":
+                const idsForAddLabels = [];
                 updatedMessages = this.state.messages.map((m) => {
                     const copy = this.cloneMessage(m);
                     if (copy.selected) {
@@ -104,22 +105,37 @@ class Viewport extends React.Component {
                             copy.labels = [label];
                         } else if (!copy.labels.includes(label)) {
                             copy.labels.push(label);
+                            idsForAddLabels.push(m.id);
                         }
                     }
                     return copy;
                 });
+
+                this.patch({
+                    'messageIds': idsForAddLabels,
+                    'command': 'addLabel',
+                    'label': label
+                });
                 break;
 
             case "removeLabel":
+                const idsForRemoveLabels = [];
                 updatedMessages = this.state.messages.map((m) => {
                     const copy = this.cloneMessage(m);
                     if (copy.selected && copy.labels) {
                         const indexOfLabel = copy.labels.findIndex(l => l === label);
                         if (indexOfLabel > -1) {
                             copy.labels.splice(indexOfLabel, 1);
+                            idsForRemoveLabels.push(m.id);
                         }
                     }
                     return copy;
+                });
+
+                this.patch({
+                    'messageIds': idsForRemoveLabels,
+                    'command': 'removeLabel',
+                    'label': label
                 });
                 break;
 
