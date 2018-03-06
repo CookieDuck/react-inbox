@@ -34,6 +34,7 @@ class Viewport extends React.Component {
 
     handleAction = ({action, id, label}) => {
         var message, updatedMessages;
+        var patchMessageIds = [];
         console.log("Received action", action);
 
         switch (action) {
@@ -61,18 +62,17 @@ class Viewport extends React.Component {
             case "markAsRead": // fall-through on purpose
             case "markAsUnread":
                 const newReadStatus = action === "markAsRead";
-                const markingMessageIds = [];
                 updatedMessages = this.state.messages.map((m) => {
                     const copy = this.cloneMessage(m);
                     if (copy.selected) {
                         copy.read = newReadStatus;
-                        markingMessageIds.push(copy.id);
+                        patchMessageIds.push(copy.id);
                     }
                     return copy;
                 });
 
                 this.patch({
-                    'messageIds': markingMessageIds,
+                    'messageIds': patchMessageIds,
                     'command': 'read',
                     'read': newReadStatus
                 });
@@ -80,24 +80,22 @@ class Viewport extends React.Component {
                 break;
 
             case "deleteSelected":
-                const messageIdsToDelete = [];
                 updatedMessages = this.state.messages.reduce((accumulator, m) => {
                     if (!m.selected) {
                         accumulator.push(this.cloneMessage(m));
                     } else {
-                        messageIdsToDelete.push(m.id);
+                        patchMessageIds.push(m.id);
                     }
                     return accumulator;
                 }, []);
 
                 this.patch({
-                    'messageIds': messageIdsToDelete,
+                    'messageIds': patchMessageIds,
                     'command': 'delete'
                 });
                 break;
 
             case "applyLabel":
-                const idsForAddLabels = [];
                 updatedMessages = this.state.messages.map((m) => {
                     const copy = this.cloneMessage(m);
                     if (copy.selected) {
@@ -105,35 +103,34 @@ class Viewport extends React.Component {
                             copy.labels = [label];
                         } else if (!copy.labels.includes(label)) {
                             copy.labels.push(label);
-                            idsForAddLabels.push(m.id);
+                            patchMessageIds.push(m.id);
                         }
                     }
                     return copy;
                 });
 
                 this.patch({
-                    'messageIds': idsForAddLabels,
+                    'messageIds': patchMessageIds,
                     'command': 'addLabel',
                     'label': label
                 });
                 break;
 
             case "removeLabel":
-                const idsForRemoveLabels = [];
                 updatedMessages = this.state.messages.map((m) => {
                     const copy = this.cloneMessage(m);
                     if (copy.selected && copy.labels) {
                         const indexOfLabel = copy.labels.findIndex(l => l === label);
                         if (indexOfLabel > -1) {
                             copy.labels.splice(indexOfLabel, 1);
-                            idsForRemoveLabels.push(m.id);
+                            patchMessageIds.push(m.id);
                         }
                     }
                     return copy;
                 });
 
                 this.patch({
-                    'messageIds': idsForRemoveLabels,
+                    'messageIds': patchMessageIds,
                     'command': 'removeLabel',
                     'label': label
                 });
