@@ -1,8 +1,24 @@
 import React from 'react';
 
-const Compose = () => {
+const Compose = ({messageHandler}) => {
+    const sendMessage = (e) => {
+        e.preventDefault();
+
+        var subject = e.target.subject.value;
+        if (!subject) {
+            subject = "(No Subject)";
+        }
+
+        var body = e.target.body.value;
+        if (!body) {
+            body = "(No Message Body)";
+        }
+
+        messageHandler({subject: subject, body: body});
+    }
+
     return (
-        <form className="form-horizontal well">
+        <form className="form-horizontal well" onSubmit={sendMessage}>
             <div className="form-group">
                 <div className="col-sm-8 col-sm-offset-2">
                     <h4>Compose Message</h4>

@@ -7,6 +7,28 @@ class Viewport extends React.Component {
     constructor(props) {
         super(props);
         this.state =  { messages: [], showComposeForm: false }
+        this.handleMessage = this.handleMessage.bind(this);
+        this.postNewMessage = this.postNewMessage.bind(this);
+    }
+
+    async handleMessage(newMessage) {
+        const newMessageFromServer = await this.postNewMessage(newMessage);
+        this.setState({ messages: [...this.state.messages, newMessageFromServer], showComposeForm: false });
+    }
+
+    async postNewMessage(newMessage) {
+        const response = await fetch('/api/messages', {
+            method: "POST",
+            body: JSON.stringify(newMessage),
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        });
+        console.log("Raw response from post to /api/messages", response);
+        const json = await response.json();
+        console.log("Parsed JSON from post:", json);
+        return json;
     }
 
     patch(requestEnvelope) {
@@ -179,7 +201,7 @@ class Viewport extends React.Component {
         return (
             <div>
                 <Toolbar messages={this.state.messages} actionHandler={this.handleAction} />
-                { this.state.showComposeForm ? <Compose /> : ""}
+                { this.state.showComposeForm ? <Compose messageHandler={this.handleMessage} /> : ""}
                 <Messages messages={this.state.messages} actionHandler={this.handleAction} />
             </div>
         );
