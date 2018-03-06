@@ -18,6 +18,10 @@ const Toolbar = ({messages, actionHandler}) => {
         actionHandler({ action: "deleteSelected" });
     }
 
+    const handleComposeButton = (e) => {
+        actionHandler({ action: "toggleCompose" });
+    }
+
     const applyLabel = (e) => {
         const value = e.target.value;
         if (value) {
@@ -54,6 +58,9 @@ const Toolbar = ({messages, actionHandler}) => {
     return (
         <div className="row toolbar">
             <div className="col-md-12">
+                <a class="btn btn-danger" onClick={handleComposeButton}>
+                    <i class="fa fa-plus"></i>
+                </a>
 
                 <button className="btn btn-default" onClick={handleSelectAllClick}>
                     <i className={"fa " + selectMessagesStyle}></i>

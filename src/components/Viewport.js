@@ -1,11 +1,12 @@
 import React from 'react';
 import Messages from './Messages';
 import Toolbar from './Toolbar';
+import Compose from './Compose';
 
 class Viewport extends React.Component {
     constructor(props) {
         super(props);
-        this.state =  { messages: [] }
+        this.state =  { messages: [], showComposeForm: false }
     }
 
     patch(requestEnvelope) {
@@ -139,6 +140,10 @@ class Viewport extends React.Component {
                     });
                 }
                 break;
+            
+            case "toggleCompose":
+                this.setState({ showComposeForm: !this.state.showComposeForm });
+                return;
 
             default:
                 console.debug("Received unknown action:", action);
@@ -174,6 +179,7 @@ class Viewport extends React.Component {
         return (
             <div>
                 <Toolbar messages={this.state.messages} actionHandler={this.handleAction} />
+                { this.state.showComposeForm ? <Compose /> : ""}
                 <Messages messages={this.state.messages} actionHandler={this.handleAction} />
             </div>
         );
