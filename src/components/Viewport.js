@@ -7,16 +7,14 @@ class Viewport extends React.Component {
     constructor(props) {
         super(props);
         this.state =  { messages: [], showComposeForm: false }
-        this.handleMessage = this.handleMessage.bind(this);
-        this.postNewMessage = this.postNewMessage.bind(this);
     }
 
-    async handleMessage(newMessage) {
+    handleMessage = async (newMessage) => {
         const newMessageFromServer = await this.postNewMessage(newMessage);
         this.setState({ messages: [...this.state.messages, newMessageFromServer], showComposeForm: false });
     }
 
-    async postNewMessage(newMessage) {
+    postNewMessage = async (newMessage) => {
         const response = await fetch('/api/messages', {
             method: "POST",
             body: JSON.stringify(newMessage),
