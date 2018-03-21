@@ -1,14 +1,13 @@
 import React from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import Messages from './Messages';
 import Toolbar from './Toolbar';
 import Compose from './Compose';
+import { fetchMessages } from '../actions/ActionCreator';
+import store from '../Store';
 
 class Viewport extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state =  { messages: [], showComposeForm: false }
-    }
-
     handleMessage = async (newMessage) => {
         const newMessageFromServer = await this.postNewMessage(newMessage);
         this.setState({ messages: [...this.state.messages, newMessageFromServer], showComposeForm: false });
@@ -40,17 +39,8 @@ class Viewport extends React.Component {
         })
     }
 
-    async getResource(resource) {
-        const response = await fetch(`/api/${resource}`);
-        console.log("Raw response for", resource, ":", response);
-        const json = await response.json();
-        console.log("JSON of", resource, ":", json);
-        return json._embedded[resource];
-    }
-
-    async componentDidMount() {
-        const messages = await this.getResource("messages");
-        this.setState({ messages: messages });
+    componentWillMount() {
+        store.dispatch(fetchMessages());
     }
 
     handleAction = ({action, id, label}) => {
@@ -198,12 +188,23 @@ class Viewport extends React.Component {
     render() {
         return (
             <div>
-                <Toolbar messages={this.state.messages} actionHandler={this.handleAction} />
-                { this.state.showComposeForm ? <Compose messageHandler={this.handleMessage} /> : ""}
-                <Messages messages={this.state.messages} actionHandler={this.handleAction} />
+                <Toolbar messages={this.props.messages} actionHandler={this.handleAction} />
+                { this.props.showComposeForm ? <Compose messageHandler={this.handleMessage} /> : ""}
+                { this.props.isFetchingMessages ? 
+                    <h1>Loading...</h1> : 
+                    <Messages messages={this.props.messages} actionHandler={this.handleAction} /> 
+                }
             </div>
         );
     }
 }
 
-export default Viewport;
+const mapStateToProps = (state) => ({
+    messages: state.messages,
+    isFetchingMessages: state.isFetchingMessages,
+    showComposeForm: state.showComposeForm
+})
+
+const mapDispatchToProps = (dispatch) => bindActionCreators({ fetchMessages }, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps)(Viewport);
