@@ -1,4 +1,7 @@
-import { FETCH_MESSAGES_STARTED, FETCH_MESSAGES_COMPLETED } from '../actions/ActionCreator'
+import { 
+    FETCH_MESSAGES_STARTED, 
+    FETCH_MESSAGES_COMPLETED, 
+    TOGGLE_COMPOSE_MESSAGE } from '../actions/ActionCreator';
 
 const initialState = {
     messages: null,
@@ -13,6 +16,9 @@ export default (state = initialState, action) => {
 
         case FETCH_MESSAGES_COMPLETED:
             return {...state, messages: action.data, isFetchingMessages: false};
+
+        case TOGGLE_COMPOSE_MESSAGE:
+            return {...state, showComposeForm: !state.showComposeForm};
 
         default:
         return state;

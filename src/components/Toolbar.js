@@ -1,4 +1,8 @@
 import React from 'react';
+import { toggleComposeForm } from '../actions/ActionCreator';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import store from '../Store';
 
 const Toolbar = ({messages, actionHandler}) => {
     const handleSelectAllClick = (e) => {
@@ -19,7 +23,7 @@ const Toolbar = ({messages, actionHandler}) => {
     }
 
     const handleComposeButton = (e) => {
-        actionHandler({ action: "toggleCompose" });
+        store.dispatch(toggleComposeForm());
     }
 
     const applyLabel = (e) => {
@@ -101,4 +105,10 @@ const Toolbar = ({messages, actionHandler}) => {
     );
 }
 
-export default Toolbar;
+const mapStateToProps = (state) => ({
+    messages: state.messages
+})
+
+const mapDispatchToProps = (dispatch) => bindActionCreators({ toggleComposeForm }, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps)(Toolbar);

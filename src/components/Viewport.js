@@ -1,6 +1,6 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import { connect, Provider } from 'react-redux';
 import Messages from './Messages';
 import Toolbar from './Toolbar';
 import Compose from './Compose';
@@ -188,7 +188,9 @@ class Viewport extends React.Component {
     render() {
         return (
             <div>
+                <Provider store={store}>
                 <Toolbar messages={this.props.messages} actionHandler={this.handleAction} />
+                </Provider>
                 { this.props.showComposeForm ? <Compose messageHandler={this.handleMessage} /> : ""}
                 { this.props.isFetchingMessages ? 
                     <h1>Loading...</h1> : 
