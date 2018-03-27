@@ -18,7 +18,7 @@ const cloneMessage = function(m) {
 }
 
 const getItemAndUpdatedMessages = function(id, messages) {
-    const indexOfMessage = indexOf(id);
+    const indexOfMessage = indexOf(id, messages);
     const message = cloneMessage(messages[indexOfMessage]);
     const msgs = [
         ...messages.slice(0, indexOfMessage),

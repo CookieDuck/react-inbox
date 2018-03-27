@@ -1,22 +1,13 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { toggleSelected } from '../actions/ActionCreator';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
 import 'font-awesome/css/font-awesome.css';
 import './../index.css';
 
-const Message = ({ message: { id, subject, read, selected, starred, labels }, actionHandler }) => {
+const Message = ({ message: { id, subject, read, selected, starred, labels }, toggleSelected, actionHandler }) => {
     const readMsgStyle = read ? "read" : "unread";
     const selMsgStyle = selected ? " selected" : "";
     const starStyle = starred ? "" : "-o";
-
-    const toggleSelectedMessage = (e) => {
-        // actionHandler({ action: "toggleSelected", id: id });
-        console.log('toggleSelectedMessage');
-        toggleSelected(id);
-    }
 
     const toggleStarred = (e) => {
         e.preventDefault();
@@ -28,7 +19,7 @@ const Message = ({ message: { id, subject, read, selected, starred, labels }, ac
             <div className="col-xs-1">
                 <div className="row">
                     <div className="col-xs-2">
-                        <input type="checkbox" checked={selected} onClick={toggleSelectedMessage} />
+                        <input type="checkbox" checked={selected} onClick={() => toggleSelected(id)} />
                     </div>
                     <div className="col-xs-2">
                         <i className={"star fa fa-star" + starStyle} onClick={toggleStarred}></i>
@@ -45,10 +36,11 @@ const Message = ({ message: { id, subject, read, selected, starred, labels }, ac
     );
 }
 
-const mapStateToProps = (state) => {
-    return {};
-};
+// const mapStateToProps = (state) => {
+//     return {};
+// };
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ toggleSelected }, dispatch);
+// const mapDispatchToProps = (dispatch) => bindActionCreators({ toggleSelected }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(Message);
+// export default connect(mapStateToProps, mapDispatchToProps)(Message);
+export default Message;
