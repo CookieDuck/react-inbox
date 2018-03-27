@@ -4,14 +4,14 @@ import 'bootstrap/dist/css/bootstrap-theme.css';
 import 'font-awesome/css/font-awesome.css';
 import './../index.css';
 
-const Message = ({ message: { id, subject, read, selected, starred, labels }, toggleSelected, actionHandler }) => {
+const Message = ({ message: { id, subject, read, selected, starred, labels }, toggleSelected, toggleStarred, actionHandler }) => {
     const readMsgStyle = read ? "read" : "unread";
     const selMsgStyle = selected ? " selected" : "";
     const starStyle = starred ? "" : "-o";
 
-    const toggleStarred = (e) => {
+    const toggleStarredLocal = (e) => {
         e.preventDefault();
-        actionHandler({ action: "toggleStarred", id: id});
+        toggleStarred(id);
     }
 
     return (
@@ -22,7 +22,7 @@ const Message = ({ message: { id, subject, read, selected, starred, labels }, to
                         <input type="checkbox" checked={selected} onClick={() => toggleSelected(id)} />
                     </div>
                     <div className="col-xs-2">
-                        <i className={"star fa fa-star" + starStyle} onClick={toggleStarred}></i>
+                        <i className={"star fa fa-star" + starStyle} onClick={toggleStarredLocal}></i>
                     </div>
                 </div>
             </div>

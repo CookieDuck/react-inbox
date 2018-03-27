@@ -2,7 +2,8 @@ import {
     FETCH_MESSAGES_STARTED,
     FETCH_MESSAGES_COMPLETED,
     TOGGLE_COMPOSE_MESSAGE,
-    TOGGLE_SELECTED
+    TOGGLE_SELECTED,
+    TOGGLE_STARRED
 } from '../actions/ActionCreator';
 
 const indexOf = function(id, messages) {
@@ -41,7 +42,7 @@ export default (state = initialState, action) => {
             return {...state, isFetchingMessages: true};
 
         case FETCH_MESSAGES_COMPLETED:
-    return  {...state, messages: action.data, isFetchingMessages: false};
+            return  {...state, messages: action.data, isFetchingMessages: false};
 
         case TOGGLE_COMPOSE_MESSAGE:
             return {...state, showComposeForm: !state.showComposeForm};
@@ -49,7 +50,12 @@ export default (state = initialState, action) => {
         case TOGGLE_SELECTED:
             ({ message, messages: updatedMessages } = getItemAndUpdatedMessages(action.data, state.messages));
             message.selected = !message.selected;
-            return {messages: updatedMessages};
+            return { messages: updatedMessages };
+        
+        case TOGGLE_STARRED:
+            ({ message, messages: updatedMessages } = getItemAndUpdatedMessages(action.id, state.messages));
+            message.starred = action.starred;
+            return { messages: updatedMessages };
 
         default:
         return state;
