@@ -1,16 +1,16 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
-import { connect, Provider } from 'react-redux';
+import { connect } from 'react-redux';
 import Messages from './Messages';
 import Toolbar from './Toolbar';
 import Compose from './Compose';
-import { fetchMessages } from '../actions/ActionCreator';
+import { fetchMessages, toggleComposeForm } from '../actions/ActionCreator';
 import store from '../Store';
 
 class Viewport extends React.Component {
     handleMessage = async (newMessage) => {
         const newMessageFromServer = await this.postNewMessage(newMessage);
-        this.setState({ messages: [...this.state.messages, newMessageFromServer], showComposeForm: false });
+        this.setState({ messages: [...this.props.messages, newMessageFromServer], showComposeForm: false });
     }
 
     postNewMessage = async (newMessage) => {
@@ -62,8 +62,8 @@ class Viewport extends React.Component {
                 break;
 
             case "selectAll":
-                const isAllSelected = this.state.messages.every((m) => m.selected);
-                updatedMessages = this.state.messages.map((m) => {
+                const isAllSelected = this.props.messages.every((m) => m.selected);
+                updatedMessages = this.props.messages.map((m) => {
                     const copy = this.cloneMessage(m);
                     copy.selected = !isAllSelected;
                     return copy;
@@ -73,7 +73,7 @@ class Viewport extends React.Component {
             case "markAsRead": // fall-through on purpose
             case "markAsUnread":
                 const newReadStatus = action === "markAsRead";
-                updatedMessages = this.state.messages.map((m) => {
+                updatedMessages = this.props.messages.map((m) => {
                     const copy = this.cloneMessage(m);
                     if (copy.selected) {
                         copy.read = newReadStatus;
@@ -91,7 +91,7 @@ class Viewport extends React.Component {
                 break;
 
             case "deleteSelected":
-                updatedMessages = this.state.messages.reduce((accumulator, m) => {
+                updatedMessages = this.props.messages.reduce((accumulator, m) => {
                     if (!m.selected) {
                         accumulator.push(this.cloneMessage(m));
                     } else {
@@ -107,7 +107,7 @@ class Viewport extends React.Component {
                 break;
 
             case "applyLabel":
-                updatedMessages = this.state.messages.map((m) => {
+                updatedMessages = this.props.messages.map((m) => {
                     const copy = this.cloneMessage(m);
                     if (copy.selected) {
                         if (!copy.labels) {
@@ -130,7 +130,7 @@ class Viewport extends React.Component {
                 break;
 
             case "removeLabel":
-                updatedMessages = this.state.messages.map((m) => {
+                updatedMessages = this.props.messages.map((m) => {
                     const copy = this.cloneMessage(m);
                     if (copy.selected && copy.labels) {
                         const indexOfLabel = copy.labels.findIndex(l => l === label);
@@ -163,7 +163,7 @@ class Viewport extends React.Component {
     }
 
     indexOf = (id) => {
-        return this.state.messages.findIndex(m => m.id === id);
+        return this.props.messages.findIndex(m => m.id === id);
     }
 
     cloneMessage = (m) => {
@@ -176,11 +176,11 @@ class Viewport extends React.Component {
 
     getItemAndUpdatedMessages = (id) => {
         const indexOfMessage = this.indexOf(id);
-        const message = this.cloneMessage(this.state.messages[indexOfMessage]);
+        const message = this.cloneMessage(this.props.messages[indexOfMessage]);
         const msgs = [
-            ...this.state.messages.slice(0, indexOfMessage),
+            ...this.props.messages.slice(0, indexOfMessage),
             message,
-            ...this.state.messages.slice(indexOfMessage + 1)
+            ...this.props.messages.slice(indexOfMessage + 1)
         ];
         return ({ message: message, messages: msgs });
     }
@@ -188,9 +188,10 @@ class Viewport extends React.Component {
     render() {
         return (
             <div>
-                <Provider store={store}>
-                <Toolbar messages={this.props.messages} actionHandler={this.handleAction} />
-                </Provider>
+                <Toolbar 
+                    messages={this.props.messages} 
+                    actionHandler={this.handleAction} 
+                    toggleCompose={() => store.dispatch(toggleComposeForm()) } />
                 { this.props.showComposeForm ? <Compose messageHandler={this.handleMessage} /> : ""}
                 { this.props.isFetchingMessages ? 
                     <h1>Loading...</h1> : 
@@ -207,6 +208,6 @@ const mapStateToProps = (state) => ({
     showComposeForm: state.showComposeForm
 })
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ fetchMessages }, dispatch)
+const mapDispatchToProps = (dispatch) => bindActionCreators({ fetchMessages, toggleComposeForm }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(Viewport);

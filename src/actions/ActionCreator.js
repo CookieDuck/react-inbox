@@ -1,6 +1,7 @@
 export const FETCH_MESSAGES_STARTED = 'FETCH_MESSAGES_STARTED';
 export const FETCH_MESSAGES_COMPLETED = 'FETCH_MESSAGES_COMPLETED';
 export const TOGGLE_COMPOSE_MESSAGE = 'TOGGLE_COMPOSE_MESSAGE';
+export const TOGGLE_SELECTED = 'TOGGLE_SELECTED';
 
 const getResource = async (resource) => {
     const response = await fetch(`/api/${resource}`);
@@ -19,3 +20,7 @@ export const fetchMessages = () => {
 }
 
 export const toggleComposeForm = () => ({ type: TOGGLE_COMPOSE_MESSAGE })
+
+export const toggleSelected = (messageId) => {
+    return { type: TOGGLE_SELECTED, data: messageId };
+}
