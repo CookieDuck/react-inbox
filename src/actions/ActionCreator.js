@@ -7,6 +7,7 @@ export const CREATE_NEW_MESSAGE = 'CREATE_NEW_MESSAGE';
 export const SELECT_ALL = 'SELECT_ALL';
 export const SELECT_NONE = 'SELECT_NONE';
 export const MARK_AS_READ = 'MARK_AS_READ';
+export const MARK_AS_UNREAD = 'MARK_AS_UNREAD';
 
 const getResource = async (resource) => {
     const response = await fetch(`/api/${resource}`);
@@ -89,5 +90,13 @@ export const markAsRead = (ids) => {
         await patch({ 'messageIds': ids, 'command': 'read', 'read': true });
         //TODO on a get per each id in ids?
         dispatch({ type: MARK_AS_READ, ids });
+    }
+}
+
+export const markAsUnread = (ids) => {
+    return async (dispatch) => {
+        await patch({ 'messageIds': ids, 'command': 'read', 'read': false });
+        //TODO on a get per each id in ids?
+        dispatch({ type: MARK_AS_UNREAD, ids });
     }
 }

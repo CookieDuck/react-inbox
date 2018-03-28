@@ -1,17 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-const Toolbar = ({messages, actionHandler, toggleCompose, selectAll, selectNone, markAsRead}) => {
+const Toolbar = ({messages, actionHandler, toggleCompose, selectAll, selectNone, markAsRead, markAsUnread}) => {
     const handleSelectAll = (e) => {
         if (messages && messages.every((m) => m.selected)) {
             selectNone();
         } else {
             selectAll();
         }
-    }
-
-    const markAsUnread = (e) => {
-        actionHandler({ action: "markAsUnread" });
     }
 
     const handleDelete = (e) => {
