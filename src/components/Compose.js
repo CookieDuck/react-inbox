@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Compose = ({messageHandler}) => {
+const Compose = ({onComposeFinished}) => {
     const sendMessage = (e) => {
         e.preventDefault();
 
@@ -14,7 +14,7 @@ const Compose = ({messageHandler}) => {
             body = "(No Message Body)";
         }
 
-        messageHandler({subject: subject, body: body});
+        onComposeFinished({subject: subject, body: body});
     }
 
     return (

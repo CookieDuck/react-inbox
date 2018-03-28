@@ -4,29 +4,10 @@ import { connect } from 'react-redux';
 import Messages from './Messages';
 import Toolbar from './Toolbar';
 import Compose from './Compose';
-import { fetchMessages, toggleComposeForm } from '../actions/ActionCreator';
+import { fetchMessages, toggleComposeForm, createNewMessage } from '../actions/ActionCreator';
 import store from '../Store';
 
 class Viewport extends React.Component {
-    handleMessage = async (newMessage) => {
-        const newMessageFromServer = await this.postNewMessage(newMessage);
-        this.setState({ messages: [...this.props.messages, newMessageFromServer], showComposeForm: false });
-    }
-
-    postNewMessage = async (newMessage) => {
-        const response = await fetch('/api/messages', {
-            method: "POST",
-            body: JSON.stringify(newMessage),
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            }
-        });
-        console.log("Raw response from post to /api/messages", response);
-        const json = await response.json();
-        console.log("Parsed JSON from post:", json);
-        return json;
-    }
 
     patch(requestEnvelope) {
         console.log("Doing patch for", requestEnvelope);
@@ -49,18 +30,6 @@ class Viewport extends React.Component {
         console.log("Received action", action);
 
         switch (action) {
-            case "toggleSelected":
-                ({ message, messages: updatedMessages } = this.getItemAndUpdatedMessages(id));
-                message.selected = !message.selected;
-                break;
-
-            case "toggleStarred":
-                ({ message, messages: updatedMessages } = this.getItemAndUpdatedMessages(id));
-                const nextStarredState = !message.starred;
-                message.starred = nextStarredState;
-                this.patch({'messageIds': [id], 'command': 'star', 'star': nextStarredState});
-                break;
-
             case "selectAll":
                 const isAllSelected = this.props.messages.every((m) => m.selected);
                 updatedMessages = this.props.messages.map((m) => {
@@ -151,10 +120,6 @@ class Viewport extends React.Component {
                 }
                 break;
             
-            case "toggleCompose":
-                this.setState({ showComposeForm: !this.state.showComposeForm });
-                return;
-
             default:
                 console.debug("Received unknown action:", action);
         }
@@ -192,7 +157,8 @@ class Viewport extends React.Component {
                     messages={this.props.messages} 
                     actionHandler={this.handleAction} 
                     toggleCompose={() => store.dispatch(toggleComposeForm()) } />
-                { this.props.showComposeForm ? <Compose messageHandler={this.handleMessage} /> : ""}
+                { this.props.showComposeForm ? 
+                    <Compose onComposeFinished={ (newMessage) => store.dispatch(createNewMessage(newMessage)) } /> : ""}
                 { this.props.isFetchingMessages ? 
                     <h1>Loading...</h1> : 
                     <Messages messages={this.props.messages} /> 

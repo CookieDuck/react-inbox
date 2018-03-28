@@ -3,6 +3,7 @@ export const FETCH_MESSAGES_COMPLETED = 'FETCH_MESSAGES_COMPLETED';
 export const TOGGLE_COMPOSE_MESSAGE = 'TOGGLE_COMPOSE_MESSAGE';
 export const TOGGLE_SELECTED = 'TOGGLE_SELECTED';
 export const TOGGLE_STARRED = 'TOGGLE_STARRED';
+export const CREATE_NEW_MESSAGE = 'CREATE_NEW_MESSAGE';
 
 const getResource = async (resource) => {
     const response = await fetch(`/api/${resource}`);
@@ -32,6 +33,21 @@ const patch = async (requestEnvelope) => {
     });
 }
 
+const postNewMessageToApi = async (newMessage) => {
+    const response = await fetch('/api/messages', {
+        method: "POST",
+        body: JSON.stringify(newMessage),
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        }
+    });
+    console.log("Raw response from post to /api/messages", response);
+    const json = await response.json();
+    console.log("Parsed JSON from post:", json);
+    return json;
+}
+
 export const fetchMessages = () => {
     return async (dispatch) => {
         dispatch({ type: FETCH_MESSAGES_STARTED });
@@ -51,4 +67,12 @@ export const toggleStarred = (id, starred) => {
         const getResponse = await getMessageById(id);
         dispatch({ type: TOGGLE_STARRED, id, starred: getResponse.starred });
     };
+}
+
+export const createNewMessage = (newMessage) => {
+    return async (dispatch) => {
+        // TODO dispatch a temporary 'posting message' actoin while we wait for response from server!
+        const newMessageFromServer = await postNewMessageToApi(newMessage);
+        dispatch({ type: CREATE_NEW_MESSAGE, message: newMessageFromServer });
+    }
 }
