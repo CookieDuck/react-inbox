@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-const Toolbar = ({messages, actionHandler, toggleCompose, selectAll, selectNone, markAsRead, markAsUnread}) => {
+const Toolbar = ({messages, actionHandler, toggleCompose, selectAll, selectNone, markAsRead, markAsUnread, deleteMessages}) => {
     const handleSelectAll = (e) => {
         if (messages && messages.every((m) => m.selected)) {
             selectNone();
@@ -12,7 +12,7 @@ const Toolbar = ({messages, actionHandler, toggleCompose, selectAll, selectNone,
 
     const handleDelete = (e) => {
         e.preventDefault();
-        actionHandler({ action: "deleteSelected" });
+        deleteMessages();
     }
 
     const applyLabel = (e) => {

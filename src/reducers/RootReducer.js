@@ -8,7 +8,8 @@ import {
     SELECT_ALL,
     SELECT_NONE,
     MARK_AS_READ,
-    MARK_AS_UNREAD
+    MARK_AS_UNREAD,
+    DELETE
 } from '../actions/ActionCreator';
 
 const indexOf = function(id, messages) {
@@ -95,6 +96,10 @@ export default (state = initialState, action) => {
             });
             return {...state, messages: updatedMessages};
 
+        case DELETE:
+            updatedMessages = state.messages.filter((m) => !m.selected).map((m) => cloneMessage(m));
+            return {...state, messages: updatedMessages};
+            
         default:
         return state;
     }
