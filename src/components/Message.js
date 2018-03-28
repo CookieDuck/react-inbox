@@ -19,7 +19,7 @@ const Message = ({ message: { id, subject, read, selected, starred, labels }, to
             <div className="col-xs-1">
                 <div className="row">
                     <div className="col-xs-2">
-                        <input type="checkbox" checked={selected} onClick={() => toggleSelected(id)} />
+                        <input type="checkbox" checked={!!selected} onClick={() => toggleSelected(id)} />
                     </div>
                     <div className="col-xs-2">
                         <i className={"star fa fa-star" + starStyle} onClick={toggleStarredLocal}></i>
