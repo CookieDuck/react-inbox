@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap-theme.css';
 import 'font-awesome/css/font-awesome.css';
 import './../index.css';
 
-const Message = ({ message: { id, subject, read, selected, starred, labels }, toggleSelected, toggleStarred, actionHandler }) => {
+const Message = ({ message: { id, subject, read, selected, starred, labels }, toggleSelected, toggleStarred }) => {
     const readMsgStyle = read ? "read" : "unread";
     const selMsgStyle = selected ? " selected" : "";
     const starStyle = starred ? "" : "-o";
@@ -36,11 +36,4 @@ const Message = ({ message: { id, subject, read, selected, starred, labels }, to
     );
 }
 
-// const mapStateToProps = (state) => {
-//     return {};
-// };
-
-// const mapDispatchToProps = (dispatch) => bindActionCreators({ toggleSelected }, dispatch);
-
-// export default connect(mapStateToProps, mapDispatchToProps)(Message);
 export default Message;

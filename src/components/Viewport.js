@@ -195,7 +195,7 @@ class Viewport extends React.Component {
                 { this.props.showComposeForm ? <Compose messageHandler={this.handleMessage} /> : ""}
                 { this.props.isFetchingMessages ? 
                     <h1>Loading...</h1> : 
-                    <Messages messages={this.props.messages} actionHandler={this.handleAction} /> 
+                    <Messages messages={this.props.messages} /> 
                 }
             </div>
         );
