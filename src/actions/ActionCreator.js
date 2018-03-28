@@ -6,6 +6,7 @@ export const TOGGLE_STARRED = 'TOGGLE_STARRED';
 export const CREATE_NEW_MESSAGE = 'CREATE_NEW_MESSAGE';
 export const SELECT_ALL = 'SELECT_ALL';
 export const SELECT_NONE = 'SELECT_NONE';
+export const MARK_AS_READ = 'MARK_AS_READ';
 
 const getResource = async (resource) => {
     const response = await fetch(`/api/${resource}`);
@@ -82,3 +83,11 @@ export const createNewMessage = (newMessage) => {
 export const selectAll = () => ({ type: SELECT_ALL })
 
 export const selectNone = () => ({ type: SELECT_NONE })
+
+export const markAsRead = (ids) => {
+    return async (dispatch) => {
+        await patch({ 'messageIds': ids, 'command': 'read', 'read': true });
+        //TODO on a get per each id in ids?
+        dispatch({ type: MARK_AS_READ, ids });
+    }
+}

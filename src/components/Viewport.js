@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import Messages from './Messages';
 import Toolbar from './Toolbar';
 import Compose from './Compose';
-import { fetchMessages, toggleComposeForm, createNewMessage, selectAll, selectNone } from '../actions/ActionCreator';
+import { fetchMessages, toggleComposeForm, createNewMessage, selectAll, selectNone, markAsRead } from '../actions/ActionCreator';
 import store from '../Store';
 
 class Viewport extends React.Component {
@@ -31,25 +31,25 @@ class Viewport extends React.Component {
 
         switch (action) {
 
-            case "markAsRead": // fall-through on purpose
-            case "markAsUnread":
-                const newReadStatus = action === "markAsRead";
-                updatedMessages = this.props.messages.map((m) => {
-                    const copy = this.cloneMessage(m);
-                    if (copy.selected) {
-                        copy.read = newReadStatus;
-                        patchMessageIds.push(copy.id);
-                    }
-                    return copy;
-                });
+            // case "markAsRead": // fall-through on purpose
+            // case "markAsUnread":
+            //     const newReadStatus = action === "markAsRead";
+            //     updatedMessages = this.props.messages.map((m) => {
+            //         const copy = this.cloneMessage(m);
+            //         if (copy.selected) {
+            //             copy.read = newReadStatus;
+            //             patchMessageIds.push(copy.id);
+            //         }
+            //         return copy;
+            //     });
 
-                this.patch({
-                    'messageIds': patchMessageIds,
-                    'command': 'read',
-                    'read': newReadStatus
-                });
+            //     this.patch({
+            //         'messageIds': patchMessageIds,
+            //         'command': 'read',
+            //         'read': newReadStatus
+            //     });
 
-                break;
+            //     break;
 
             case "deleteSelected":
                 updatedMessages = this.props.messages.reduce((accumulator, m) => {
@@ -142,6 +142,10 @@ class Viewport extends React.Component {
         return ({ message: message, messages: msgs });
     }
 
+    getSelectedMessageIds = () => {
+        return !this.props.messages ? [] : this.props.messages.filter((m) => m.selected).map((m) => m.id);
+    }
+
     render() {
         return (
             <div>
@@ -150,7 +154,8 @@ class Viewport extends React.Component {
                     actionHandler={this.handleAction} 
                     toggleCompose={() => store.dispatch(toggleComposeForm()) }
                     selectAll={() => store.dispatch(selectAll()) }
-                    selectNone={() => store.dispatch(selectNone()) } />
+                    selectNone={() => store.dispatch(selectNone()) } 
+                    markAsRead={() => store.dispatch(markAsRead(this.getSelectedMessageIds()))} />
                 { this.props.showComposeForm ? 
                     <Compose onComposeFinished={ (newMessage) => store.dispatch(createNewMessage(newMessage)) } /> : ""}
                 { this.props.isFetchingMessages ? 

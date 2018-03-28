@@ -6,7 +6,8 @@ import {
     TOGGLE_STARRED,
     CREATE_NEW_MESSAGE,
     SELECT_ALL,
-    SELECT_NONE
+    SELECT_NONE,
+    MARK_AS_READ
 } from '../actions/ActionCreator';
 
 const indexOf = function(id, messages) {
@@ -76,6 +77,15 @@ export default (state = initialState, action) => {
 
         case SELECT_NONE:
             return {...state, messages: cloneMessagesWithSelectedState(state.messages, false)};
+
+        case MARK_AS_READ:
+            // TODO make this not terrible
+            updatedMessages = state.messages.map((m) => cloneMessage(m));
+            action.ids.forEach(id => {
+                const indexOfMessage = indexOf(id, updatedMessages);
+                updatedMessages[indexOfMessage].read = true;
+            });
+            return {...state, messages: updatedMessages};
 
         default:
         return state;
