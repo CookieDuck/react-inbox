@@ -4,6 +4,8 @@ export const TOGGLE_COMPOSE_MESSAGE = 'TOGGLE_COMPOSE_MESSAGE';
 export const TOGGLE_SELECTED = 'TOGGLE_SELECTED';
 export const TOGGLE_STARRED = 'TOGGLE_STARRED';
 export const CREATE_NEW_MESSAGE = 'CREATE_NEW_MESSAGE';
+export const SELECT_ALL = 'SELECT_ALL';
+export const SELECT_NONE = 'SELECT_NONE';
 
 const getResource = async (resource) => {
     const response = await fetch(`/api/${resource}`);
@@ -76,3 +78,7 @@ export const createNewMessage = (newMessage) => {
         dispatch({ type: CREATE_NEW_MESSAGE, message: newMessageFromServer });
     }
 }
+
+export const selectAll = () => ({ type: SELECT_ALL })
+
+export const selectNone = () => ({ type: SELECT_NONE })

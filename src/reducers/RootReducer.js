@@ -4,7 +4,9 @@ import {
     TOGGLE_COMPOSE_MESSAGE,
     TOGGLE_SELECTED,
     TOGGLE_STARRED,
-    CREATE_NEW_MESSAGE
+    CREATE_NEW_MESSAGE,
+    SELECT_ALL,
+    SELECT_NONE
 } from '../actions/ActionCreator';
 
 const indexOf = function(id, messages) {
@@ -28,7 +30,15 @@ const getItemAndUpdatedMessages = function(id, messages) {
         ...messages.slice(indexOfMessage + 1)
     ];
     return ({ message: message, messages: msgs });
-}  
+}
+
+const cloneMessagesWithSelectedState = function(messages, selected) {
+    return messages.map((m) => {
+        const copy = cloneMessage(m);
+        copy.selected = selected;
+        return copy;
+    });
+}
 
 const initialState = {
     messages: null, 
@@ -60,6 +70,12 @@ export default (state = initialState, action) => {
             ({ message, messages: updatedMessages } = getItemAndUpdatedMessages(action.id, state.messages));
             message.starred = action.starred;
             return {...state, messages: updatedMessages };
+
+        case SELECT_ALL:
+            return {...state, messages: cloneMessagesWithSelectedState(state.messages, true)};
+
+        case SELECT_NONE:
+            return {...state, messages: cloneMessagesWithSelectedState(state.messages, false)};
 
         default:
         return state;

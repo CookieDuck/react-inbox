@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import Messages from './Messages';
 import Toolbar from './Toolbar';
 import Compose from './Compose';
-import { fetchMessages, toggleComposeForm, createNewMessage } from '../actions/ActionCreator';
+import { fetchMessages, toggleComposeForm, createNewMessage, selectAll, selectNone } from '../actions/ActionCreator';
 import store from '../Store';
 
 class Viewport extends React.Component {
@@ -30,14 +30,6 @@ class Viewport extends React.Component {
         console.log("Received action", action);
 
         switch (action) {
-            case "selectAll":
-                const isAllSelected = this.props.messages.every((m) => m.selected);
-                updatedMessages = this.props.messages.map((m) => {
-                    const copy = this.cloneMessage(m);
-                    copy.selected = !isAllSelected;
-                    return copy;
-                });
-                break;
 
             case "markAsRead": // fall-through on purpose
             case "markAsUnread":
@@ -156,7 +148,9 @@ class Viewport extends React.Component {
                 <Toolbar 
                     messages={this.props.messages} 
                     actionHandler={this.handleAction} 
-                    toggleCompose={() => store.dispatch(toggleComposeForm()) } />
+                    toggleCompose={() => store.dispatch(toggleComposeForm()) }
+                    selectAll={() => store.dispatch(selectAll()) }
+                    selectNone={() => store.dispatch(selectNone()) } />
                 { this.props.showComposeForm ? 
                     <Compose onComposeFinished={ (newMessage) => store.dispatch(createNewMessage(newMessage)) } /> : ""}
                 { this.props.isFetchingMessages ? 

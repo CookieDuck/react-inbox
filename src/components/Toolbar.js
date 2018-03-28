@@ -1,9 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-const Toolbar = ({messages, actionHandler, toggleCompose}) => {
-    const handleSelectAllClick = (e) => {
-        actionHandler({ action: "selectAll" });
+const Toolbar = ({messages, actionHandler, toggleCompose, selectAll, selectNone}) => {
+    const handleSelectAll = (e) => {
+        if (messages && messages.every((m) => m.selected)) {
+            selectNone();
+        } else {
+            selectAll();
+        }
     }
 
     const markAsRead = (e) => {
@@ -59,7 +63,7 @@ const Toolbar = ({messages, actionHandler, toggleCompose}) => {
                     <i className="fa fa-plus"></i>
                 </a>
 
-                <button className="btn btn-default" onClick={handleSelectAllClick}>
+                <button className="btn btn-default" onClick={handleSelectAll}>
                     <i className={"fa " + selectMessagesStyle}></i>
                 </button>
 
