@@ -3,14 +3,14 @@ import { connect } from 'react-redux';
 
 const Toolbar = ({
     messages, 
-    actionHandler, 
     toggleCompose, 
     selectAll, 
     selectNone, 
     markAsRead, 
     markAsUnread, 
     deleteMessages, 
-    applyLabel
+    applyLabel,
+    removeLabel
 }) => {
     const handleSelectAll = (e) => {
         if (messages && messages.every((m) => m.selected)) {
@@ -33,10 +33,10 @@ const Toolbar = ({
         e.target.selectedIndex = 0;
     }
 
-    const removeLabel = (e) => {
+    const handleRemoveLabel = (e) => {
         const value = e.target.value;
         if (value) {
-            actionHandler({ action: "removeLabel", label: value });
+            removeLabel(value);
         }
         e.target.selectedIndex = 0;
     }
@@ -84,7 +84,7 @@ const Toolbar = ({
                     <option value="gschool">gschool</option>
                 </select>
 
-                <select className="form-control label-select" disabled={disabled} onChange={removeLabel}>
+                <select className="form-control label-select" disabled={disabled} onChange={handleRemoveLabel}>
                     <option>Remove label</option>
                     <option value="dev">dev</option>
                     <option value="personal">personal</option>

@@ -10,6 +10,7 @@ export const MARK_AS_READ = 'MARK_AS_READ';
 export const MARK_AS_UNREAD = 'MARK_AS_UNREAD';
 export const DELETE = 'DELETE';
 export const APPLY_LABEL = 'APPLY_LABEL';
+export const REMOVE_LABEL = 'REMOVE_LABEL';
 
 const getResource = async (resource) => {
     const response = await fetch(`/api/${resource}`);
@@ -115,6 +116,15 @@ export const applyLabel = (ids, label) => {
         if (ids && ids.length > 0) {
             await patch({ 'messageIds': ids, 'command': 'addLabel', 'label': label });
             dispatch({ type: APPLY_LABEL, ids, label });
+        }
+    }
+}
+
+export const removeLabel = (ids, label) => {
+    return async (dispatch) => {
+        if (ids && ids.length > 0) {
+            await patch({ 'messageIds': ids, 'command': 'removeLabel', 'label': label });
+            dispatch({ type: REMOVE_LABEL, ids, label });
         }
     }
 }

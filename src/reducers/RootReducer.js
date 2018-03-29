@@ -10,7 +10,8 @@ import {
     MARK_AS_READ,
     MARK_AS_UNREAD,
     DELETE,
-    APPLY_LABEL
+    APPLY_LABEL,
+    REMOVE_LABEL
 } from '../actions/ActionCreator';
 
 const indexOf = function(id, messages) {
@@ -115,10 +116,25 @@ export default (state = initialState, action) => {
                 }
                 return m;
             });
-        
+            return {...state, messages: updatedMessages };
+            
+        case REMOVE_LABEL:
+            updatedMessages = state.messages.map((m) => {
+                if (action.ids.includes(m.id)) {
+                    const copy = cloneMessage(m);
+                    if (copy.labels) {
+                        const indexOfLabel = copy.labels.findIndex(l => l === action.label);
+                        if (indexOfLabel > -1) {
+                            copy.labels.splice(indexOfLabel, 1);
+                        }
+                    }
+                    return copy;
+                }
+                return m;
+            });
             return {...state, messages: updatedMessages };
 
         default:
-        return state;
+            return state;
     }
 }
