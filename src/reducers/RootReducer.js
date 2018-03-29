@@ -9,7 +9,8 @@ import {
     SELECT_NONE,
     MARK_AS_READ,
     MARK_AS_UNREAD,
-    DELETE
+    DELETE,
+    APPLY_LABEL
 } from '../actions/ActionCreator';
 
 const indexOf = function(id, messages) {
@@ -99,7 +100,24 @@ export default (state = initialState, action) => {
         case DELETE:
             updatedMessages = state.messages.filter((m) => !m.selected).map((m) => cloneMessage(m));
             return {...state, messages: updatedMessages};
-            
+
+        case APPLY_LABEL:
+            let label = action.label;
+            updatedMessages = state.messages.map((m) => {
+                if (action.ids.includes(m.id)) {
+                    const copy = cloneMessage(m);
+                    if (!copy.labels) {
+                        copy.labels = [label];
+                    } else if (!copy.labels.includes(label)) {
+                        copy.labels.push(label);
+                    }
+                    return copy;
+                }
+                return m;
+            });
+        
+            return {...state, messages: updatedMessages };
+
         default:
         return state;
     }

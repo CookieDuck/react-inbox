@@ -4,7 +4,16 @@ import { connect } from 'react-redux';
 import Messages from './Messages';
 import Toolbar from './Toolbar';
 import Compose from './Compose';
-import { fetchMessages, toggleComposeForm, createNewMessage, selectAll, selectNone, markAsRead, markAsUnread, deleteMessages } from '../actions/ActionCreator';
+import { 
+    fetchMessages, 
+    toggleComposeForm, 
+    createNewMessage, 
+    selectAll, 
+    selectNone, 
+    markAsRead, 
+    markAsUnread, 
+    deleteMessages, 
+    applyLabel } from '../actions/ActionCreator';
 import store from '../Store';
 
 class Viewport extends React.Component {
@@ -30,29 +39,6 @@ class Viewport extends React.Component {
         console.log("Received action", action);
 
         switch (action) {
-
-            case "applyLabel":
-                updatedMessages = this.props.messages.map((m) => {
-                    const copy = this.cloneMessage(m);
-                    if (copy.selected) {
-                        if (!copy.labels) {
-                            copy.labels = [label];
-                        } else if (!copy.labels.includes(label)) {
-                            copy.labels.push(label);
-                            patchMessageIds.push(m.id);
-                        }
-                    }
-                    return copy;
-                });
-
-                if (patchMessageIds.length > 0) {
-                    this.patch({
-                        'messageIds': patchMessageIds,
-                        'command': 'addLabel',
-                        'label': label
-                    });
-                }
-                break;
 
             case "removeLabel":
                 updatedMessages = this.props.messages.map((m) => {
@@ -121,7 +107,8 @@ class Viewport extends React.Component {
                     selectNone={() => store.dispatch(selectNone()) } 
                     markAsRead={() => store.dispatch(markAsRead(this.getSelectedMessageIds()))} 
                     markAsUnread={() => store.dispatch(markAsUnread(this.getSelectedMessageIds()))} 
-                    deleteMessages={() => store.dispatch(deleteMessages(this.getSelectedMessageIds()))} />
+                    deleteMessages={() => store.dispatch(deleteMessages(this.getSelectedMessageIds()))} 
+                    applyLabel={(label) => store.dispatch(applyLabel(this.getSelectedMessageIds(), label))} />
                 { this.props.showComposeForm ? 
                     <Compose onComposeFinished={ (newMessage) => store.dispatch(createNewMessage(newMessage)) } /> : ""}
                 { this.props.isFetchingMessages ? 

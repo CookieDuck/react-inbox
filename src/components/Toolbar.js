@@ -1,7 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-const Toolbar = ({messages, actionHandler, toggleCompose, selectAll, selectNone, markAsRead, markAsUnread, deleteMessages}) => {
+const Toolbar = ({
+    messages, 
+    actionHandler, 
+    toggleCompose, 
+    selectAll, 
+    selectNone, 
+    markAsRead, 
+    markAsUnread, 
+    deleteMessages, 
+    applyLabel
+}) => {
     const handleSelectAll = (e) => {
         if (messages && messages.every((m) => m.selected)) {
             selectNone();
@@ -15,10 +25,10 @@ const Toolbar = ({messages, actionHandler, toggleCompose, selectAll, selectNone,
         deleteMessages();
     }
 
-    const applyLabel = (e) => {
+    const handleApplyLabel = (e) => {
         const value = e.target.value;
         if (value) {
-            actionHandler({ action: "applyLabel", label: value });
+            applyLabel(value);
         }
         e.target.selectedIndex = 0;
     }
@@ -67,7 +77,7 @@ const Toolbar = ({messages, actionHandler, toggleCompose, selectAll, selectNone,
                     Mark As Unread
                 </button>
 
-                <select className="form-control label-select" disabled={disabled} onChange={applyLabel} >
+                <select className="form-control label-select" disabled={disabled} onChange={handleApplyLabel} >
                     <option>Apply label</option>
                     <option value="dev">dev</option>
                     <option value="personal">personal</option>
