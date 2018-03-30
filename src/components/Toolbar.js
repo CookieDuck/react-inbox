@@ -1,5 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { 
+    toggleComposeForm, 
+    selectAll, 
+    selectNone, 
+    markAsRead, 
+    markAsUnread, 
+    deleteMessages, 
+    applyLabel,
+    removeLabel 
+ } from '../actions/ActionCreator';
 
 const Toolbar = ({
     messages, 
@@ -22,13 +32,13 @@ const Toolbar = ({
 
     const handleDelete = (e) => {
         e.preventDefault();
-        deleteMessages();
+        deleteMessages(getSelectedMessageIds());
     }
 
     const handleApplyLabel = (e) => {
         const value = e.target.value;
         if (value) {
-            applyLabel(value);
+            applyLabel(getSelectedMessageIds(), value);
         }
         e.target.selectedIndex = 0;
     }
@@ -36,9 +46,13 @@ const Toolbar = ({
     const handleRemoveLabel = (e) => {
         const value = e.target.value;
         if (value) {
-            removeLabel(value);
+            removeLabel(getSelectedMessageIds(), value);
         }
         e.target.selectedIndex = 0;
+    }
+
+    const getSelectedMessageIds = () => {
+        return !messages ? [] : messages.filter((m) => m.selected).map((m) => m.id);
     }
 
     const unreadCount = messages.filter((m) => !m.read).length;
@@ -69,11 +83,11 @@ const Toolbar = ({
                     <i className={"fa " + selectMessagesStyle}></i>
                 </button>
 
-                <button className="btn btn-default" disabled={disabled} onClick={markAsRead} >
+                <button className="btn btn-default" disabled={disabled} onClick={() => markAsRead(getSelectedMessageIds())} >
                     Mark As Read
                 </button>
 
-                <button className="btn btn-default" disabled={disabled} onClick={markAsUnread} >
+                <button className="btn btn-default" disabled={disabled} onClick={() => markAsUnread(getSelectedMessageIds())} >
                     Mark As Unread
                 </button>
 
@@ -108,4 +122,15 @@ const mapStateToProps = (state) => ({
     messages: state.messages
 })
 
-export default connect(mapStateToProps, null)(Toolbar);
+const mapDispatchToProps = (dispatch) => ({
+    toggleCompose: () => dispatch(toggleComposeForm()),
+    selectAll: () => dispatch(selectAll()),
+    selectNone: () => dispatch(selectNone()),
+    markAsRead: (ids) => dispatch(markAsRead(ids)),
+    markAsUnread: (ids) => dispatch(markAsUnread(ids)),
+    deleteMessages: (ids) => dispatch(deleteMessages(ids)),
+    applyLabel: (ids, label) => dispatch(applyLabel(ids, label)),
+    removeLabel: (ids, label) => dispatch(removeLabel(ids, label)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Toolbar);

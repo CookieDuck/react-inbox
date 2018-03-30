@@ -3,15 +3,21 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
 import 'font-awesome/css/font-awesome.css';
 import './../index.css';
+import { toggleSelected, toggleStarred } from '../actions/ActionCreator';
+import { connect } from 'react-redux';
 
-const Message = ({ message: { id, subject, read, selected, starred, labels }, toggleSelected, toggleStarred }) => {
+const Message = ({ 
+    message: { id, subject, read, selected, starred, labels }, 
+    toggleSelected, 
+    toggleStarred
+}) => {
     const readMsgStyle = read ? "read" : "unread";
     const selMsgStyle = selected ? " selected" : "";
     const starStyle = starred ? "" : "-o";
 
     const toggleStarredLocal = (e) => {
         e.preventDefault();
-        toggleStarred(id);
+        toggleStarred(id, !starred);
     }
 
     return (
@@ -36,4 +42,9 @@ const Message = ({ message: { id, subject, read, selected, starred, labels }, to
     );
 }
 
-export default Message;
+const mapDispatchToProps = (dispatch) => ({
+    toggleSelected: (messageId) => dispatch(toggleSelected(messageId)),
+    toggleStarred: (id, starred) => dispatch(toggleStarred(id, starred))
+});
+
+export default connect(null, mapDispatchToProps)(Message);
