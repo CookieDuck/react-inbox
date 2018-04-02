@@ -3,7 +3,8 @@ import Viewport from '../src/components/Viewport';
 import store from './Store';
 import { fetchMessages } from './actions/ActionCreator';
 
-const App = () => { return(<Viewport />); }
 store.dispatch(fetchMessages());
+
+const App = () => { return(<Viewport />); }
 
 export default App;

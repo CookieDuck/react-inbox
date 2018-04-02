@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { 
     toggleComposeForm, 
     selectAll, 
@@ -122,15 +123,15 @@ const mapStateToProps = (state) => ({
     messages: state.messages
 })
 
-const mapDispatchToProps = (dispatch) => ({
-    toggleCompose: () => dispatch(toggleComposeForm()),
-    selectAll: () => dispatch(selectAll()),
-    selectNone: () => dispatch(selectNone()),
-    markAsRead: (ids) => dispatch(markAsRead(ids)),
-    markAsUnread: (ids) => dispatch(markAsUnread(ids)),
-    deleteMessages: (ids) => dispatch(deleteMessages(ids)),
-    applyLabel: (ids, label) => dispatch(applyLabel(ids, label)),
-    removeLabel: (ids, label) => dispatch(removeLabel(ids, label)),
-})
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+    toggleCompose: () => toggleComposeForm(),
+    selectAll, 
+    selectNone, 
+    markAsRead: (ids) => markAsRead(ids),
+    markAsUnread: (ids) => markAsUnread(ids),
+    deleteMessages: (ids) => deleteMessages(ids),
+    applyLabel: (ids, label) => applyLabel(ids, label),
+    removeLabel: (ids, label) => removeLabel(ids, label),
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Toolbar);

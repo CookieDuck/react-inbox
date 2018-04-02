@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { createNewMessage } from '../actions/ActionCreator';
 
 const Compose = ({onComposeFinished}) => {
@@ -47,8 +48,8 @@ const Compose = ({onComposeFinished}) => {
     );
 }
 
-const mapDispatchToProps = (dispatch) => ({
-    onComposeFinished: (newMessage) => dispatch(createNewMessage(newMessage))
-});
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+    onComposeFinished: (newMessage) => createNewMessage(newMessage)
+}, dispatch);
 
 export default connect(null, mapDispatchToProps)(Compose);

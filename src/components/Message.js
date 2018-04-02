@@ -5,6 +5,7 @@ import 'font-awesome/css/font-awesome.css';
 import './../index.css';
 import { toggleSelected, toggleStarred } from '../actions/ActionCreator';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 const Message = ({ 
     message: { id, subject, read, selected, starred, labels }, 
@@ -42,9 +43,9 @@ const Message = ({
     );
 }
 
-const mapDispatchToProps = (dispatch) => ({
-    toggleSelected: (messageId) => dispatch(toggleSelected(messageId)),
-    toggleStarred: (id, starred) => dispatch(toggleStarred(id, starred))
-});
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+    toggleSelected: (messageId) => toggleSelected(messageId),
+    toggleStarred: (id, starred) => toggleStarred(id, starred)
+}, dispatch);
 
 export default connect(null, mapDispatchToProps)(Message);
