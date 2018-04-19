@@ -15,9 +15,12 @@ export const REMOVE_LABEL = 'REMOVE_LABEL';
 const getResource = async (resource) => {
     const response = await fetch(`/api/${resource}`);
     console.log(`Raw response for ${resource}:`, response);
-    const json = await response.json();
+    const json = await response.json().catch(function(e) { 
+        console.error(`Handling error from call to /api/${resource}`, e);
+        return null;
+    });
     console.log(`JSON of ${resource}:`, json);
-    return json._embedded[resource];
+    return !json ? null : json._embedded[resource];
 }
 
 const getMessageById = async (id) => {
@@ -59,7 +62,7 @@ export const fetchMessages = () => {
     return async (dispatch) => {
         dispatch({ type: FETCH_MESSAGES_STARTED });
         var messages = await getResource("messages");
-        dispatch({ type: FETCH_MESSAGES_COMPLETED, data: messages });
+        dispatch({ type: FETCH_MESSAGES_COMPLETED, data: messages ? messages : null });
     }
 }
 

@@ -9,7 +9,7 @@ const Viewport = ({messages, showComposeForm, isFetchingMessages}) => {
         <div>
             <Toolbar />
             {showComposeForm ? <Compose /> : ""}
-            {isFetchingMessages ? <h1>Loading...</h1> : <Messages />}
+            {isFetchingMessages || !messages ? <h1>Loading...</h1> : <Messages />}
         </div>
     );
 }

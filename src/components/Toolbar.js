@@ -56,12 +56,12 @@ const Toolbar = ({
         return !messages ? [] : messages.filter((m) => m.selected).map((m) => m.id);
     }
 
-    const unreadCount = messages.filter((m) => !m.read).length;
+    const unreadCount = !messages ? 0 : messages.filter((m) => !m.read).length;
     var unreadDisplay = "unread message";
     if (unreadCount !== 1)
         unreadDisplay += "s";
     
-    const selectedCount = messages.filter((m) => m.selected).length;
+    const selectedCount = !messages ? 0 : messages.filter((m) => m.selected).length;
     var selectMessagesStyle = "fa-square-o"; // 0
     if (selectedCount !== 0 && messages.length > 0) {
         if (messages.length === selectedCount) {

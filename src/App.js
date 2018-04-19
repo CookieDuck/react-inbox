@@ -1,10 +1,16 @@
-import React from 'react';
+import React, { Component } from 'react';
 import Viewport from '../src/components/Viewport';
 import store from './Store';
 import { fetchMessages } from './actions/ActionCreator';
 
-store.dispatch(fetchMessages());
+class App extends Component {
+    componentDidMount() {
+        store.dispatch(fetchMessages());
+    }
 
-const App = () => { return(<Viewport />); }
+    render() {
+        return(<Viewport />);
+    }
+}
 
 export default App;
